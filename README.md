@@ -30,7 +30,7 @@ pip install --user cookiecutter
 
 ```bash
 cd $GOPATH/src/github.com/FinancialTimes
-cookiecutter gh:FinancialTimes/cookiecutter-upp-golang
+cookiecutter git@github.com:Financial-Times/cookiecutter-upp-golang.git
 ```
 
 You will be prompted to provide values for template properties (or accept defaults).
