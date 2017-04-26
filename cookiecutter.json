@@ -1,0 +1,6 @@
+{
+  "project_name": "UPP Golang microservice template",
+  "service_name": "{{ cookiecutter.project_name.lower().replace(' ', '-') }}",
+  "project_short_description": "UPP Golang microservice template",
+  "github_username": "your_name"
+}
