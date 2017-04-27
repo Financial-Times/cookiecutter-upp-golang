@@ -3,7 +3,7 @@
 echo "mode: atomic" > $CIRCLE_ARTIFACTS/coverage.out # covermode is set to atomic when running tests using the -race flag
 
 PACKAGES=`govendor list -no-status +local`
-PACKAGES_LIST=`govendor list -no-status +local |  paste -sd ',' -`
+PACKAGES_LIST=`govendor list -no-status +local | paste -sd ',' -`
 EXIT_CODE=0
 
 for PKG in $PACKAGES; do
