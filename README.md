@@ -21,17 +21,6 @@ Current features
 # Usage
 
 1. Install cookiecutter (see [documentation](https://cookiecutter.readthedocs.io/en/latest/installation.html) for detailed instructions)
-
-```bash
-pip install --user cookiecutter
-```
-
-macOS:
-
-```bash
-brew install cookiecutter
-```
-
 2. Create new local repository
 
 ```bash
