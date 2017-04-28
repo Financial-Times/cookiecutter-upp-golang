@@ -26,10 +26,16 @@ Current features
 pip install --user cookiecutter
 ```
 
+macOS:
+
+```bash
+brew install cookiecutter
+```
+
 2. Create new local repository
 
 ```bash
-cd $GOPATH/src/github.com/FinancialTimes
+cd $GOPATH/src/github.com/Financial-Times
 cookiecutter git@github.com:Financial-Times/cookiecutter-upp-golang.git
 ```
 
