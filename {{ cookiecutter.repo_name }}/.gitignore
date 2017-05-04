@@ -1,0 +1,5 @@
+*.iml
+*.exe
+.idea
+{{ cookiecutter.repo_name }}
+vendor/*/

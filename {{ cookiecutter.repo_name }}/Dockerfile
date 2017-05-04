@@ -1,6 +1,6 @@
 FROM golang:1.8-alpine
 
-ENV PROJECT={{ cookiecutter.service_name }}
+ENV PROJECT={{ cookiecutter.repo_name }}
 COPY . /${PROJECT}-sources/
 
 RUN apk --no-cache --virtual .build-dependencies add git \
@@ -29,4 +29,4 @@ RUN apk --no-cache --virtual .build-dependencies add git \
 
 WORKDIR /
 
-CMD [ "/{{ cookiecutter.service_name }}" ]
+CMD [ "/{{ cookiecutter.repo_name }}" ]

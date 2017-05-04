@@ -11,19 +11,21 @@ import (
 	"syscall"
 )
 
+const appDescription =  "{{ cookiecutter.project_short_description }}"
+
 func main() {
-	app := cli.App("{{ cookiecutter.service_name }}", "{{ cookiecutter.project_short_description }}")
+	app := cli.App("{{ cookiecutter.service_name }}", appDescription)
 
 	appSystemCode := app.String(cli.StringOpt{
 		Name:   "app-system-code",
-		Value:  "{{ cookiecutter.service_name }}",
+		Value:  "{{ cookiecutter.system_code }}",
 		Desc:   "System Code of the application",
 		EnvVar: "APP_SYSTEM_CODE",
 	})
 
 	appName := app.String(cli.StringOpt{
 		Name:   "app-name",
-		Value:  "{{ cookiecutter.project_name }}",
+		Value:  "{{ cookiecutter.app_name }}",
 		Desc:   "Application name",
 		EnvVar: "APP_NAME",
 	})
@@ -36,7 +38,7 @@ func main() {
 	})
 
 	log.SetLevel(log.InfoLevel)
-	log.Infof("[Startup] {{ cookiecutter.project_name }} is starting ")
+	log.Infof("[Startup] {{ cookiecutter.service_name }} is starting ")
 
 	app.Action = func() {
 		log.Infof("System code: %s, App Name: %s, Port: %s", *appSystemCode, *appName, *port)
@@ -61,7 +63,7 @@ func serveAdminEndpoints(appSystemCode string, appName string, port string) {
 
 	serveMux := http.NewServeMux()
 
-	hc := health.HealthCheck{SystemCode: appSystemCode, Name: appName, Description: "{{ cookiecutter.project_short_description }}", Checks: healthService.checks}
+	hc := health.HealthCheck{SystemCode: appSystemCode, Name: appName, Description: appDescription, Checks: healthService.checks}
 	serveMux.HandleFunc(healthPath, health.Handler(hc))
 	serveMux.HandleFunc(status.GTGPath, status.NewGoodToGoHandler(healthService.gtgCheck))
 	serveMux.HandleFunc(status.BuildInfoPath, status.BuildInfoHandler)
