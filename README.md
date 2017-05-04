@@ -35,7 +35,9 @@ See [cookiecutter.json](cookiecutter.json) for supported properties.
 
 ```bash
 cd $GOPATH/src/github.com/<your_new_repo>
+go get
 govendor init
+govendor add +external
 go build
 ```
 
