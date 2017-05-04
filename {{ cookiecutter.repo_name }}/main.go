@@ -11,7 +11,7 @@ import (
 	"syscall"
 )
 
-const appDescription =  "{{ cookiecutter.project_short_description }}"
+const appDescription = "{{ cookiecutter.project_short_description }}"
 
 func main() {
 	app := cli.App("{{ cookiecutter.service_name }}", appDescription)
