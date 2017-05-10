@@ -1,6 +1,9 @@
 {
-  "project_name": "UPP Golang microservice template",
-  "service_name": "{{ cookiecutter.project_name.lower().replace(' ', '-') }}",
-  "project_short_description": "UPP Golang microservice template",
+  "app_name": "Golang Microservice Template",
+  "service_name": "{{ cookiecutter.app_name.lower().replace(' ', '-') }}",
+  "system_code": "{{ cookiecutter.service_name }}",
+  "repo_name": "{{ cookiecutter.system_code }}",
+  "docker_image": "coco/{{ cookiecutter.system_code }}",
+  "project_short_description": "UPP Golang Microservice Template short description - please amend",
   "github_username": "your_name"
 }

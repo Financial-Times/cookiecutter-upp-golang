@@ -1,6 +1,6 @@
 *.iml
 .idea
-{{ cookiecutter.service_name }}*
+{{ cookiecutter.repo_name }}*
 vendor/*/
 .project
 .vscode
