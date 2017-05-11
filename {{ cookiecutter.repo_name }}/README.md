@@ -1,7 +1,7 @@
 # {{ cookiecutter.service_name }}
 _Should be the same as the github repo name but it isn't always._
 
-[![Circle CI](https://circleci.com/gh/Financial-Times/{{ cookiecutter.service_name }}/tree/master.png?style=shield)](https://circleci.com/gh/Financial-Times/{{ cookiecutter.service_name }}/tree/master)[![Go Report Card](https://goreportcard.com/badge/github.com/Financial-Times/{{ cookiecutter.service_name }})](https://goreportcard.com/report/github.com/Financial-Times/{{ cookiecutter.service_name }}) [![Coverage Status](https://coveralls.io/repos/github/Financial-Times/{{ cookiecutter.service_name }}/badge.svg)](https://coveralls.io/github/Financial-Times/{{ cookiecutter.service_name }})
+[![Circle CI](https://circleci.com/gh/Financial-Times/{{ cookiecutter.repo_name }}/tree/master.png?style=shield)](https://circleci.com/gh/Financial-Times/{{ cookiecutter.repo_name }}/tree/master)[![Go Report Card](https://goreportcard.com/badge/github.com/Financial-Times/{{ cookiecutter.repo_name }})](https://goreportcard.com/report/github.com/Financial-Times/{{ cookiecutter.repo_name }}) [![Coverage Status](https://coveralls.io/repos/github/Financial-Times/{{ cookiecutter.repo_name }}/badge.svg)](https://coveralls.io/github/Financial-Times/{{ cookiecutter.repo_name }})
 
 ## Introduction
 
@@ -16,8 +16,8 @@ _How can I install it_
 Download the source code, dependencies and test dependencies:
 
         go get -u github.com/kardianos/govendor
-        go get -u github.com/Financial-Times/{{ cookiecutter.service_name }}
-        cd $GOPATH/src/github.com/Financial-Times/{{ cookiecutter.service_name }}
+        go get -u github.com/Financial-Times/{{ cookiecutter.repo_name }}
+        cd $GOPATH/src/github.com/Financial-Times/{{ cookiecutter.repo_name }}
         govendor sync
         go build .
 
@@ -36,8 +36,8 @@ _How can I run it_
 
 Options:
 
-        --app-system-code="{{ cookiecutter.service_name }}"            System Code of the application ($APP_SYSTEM_CODE)
-        --app-name="{{ cookiecutter.project_name }}"                   Application name ($APP_NAME)
+        --app-system-code="{{ cookiecutter.system_code }}"            System Code of the application ($APP_SYSTEM_CODE)
+        --app-name="{{ cookiecutter.app_name }}"                   Application name ($APP_NAME)
         --port="8080"                                           Port to listen on ($APP_PORT)
         
 3. Test:
@@ -53,8 +53,8 @@ Options:
 ## Build and deployment
 _How can I build and deploy it (lots of this will be links out as the steps will be common)_
 
-* Built by Docker Hub on merge to master: [coco/{{ cookiecutter.service_name }}](https://hub.docker.com/r/coco/{{ cookiecutter.service_name }}/)
-* CI provided by CircleCI: [{{ cookiecutter.service_name }}](https://circleci.com/gh/Financial-Times/{{ cookiecutter.service_name }})
+* Built by Docker Hub on merge to master: [{{ cookiecutter.docker_image }}](https://hub.docker.com/r/{{ cookiecutter.docker_image }}/)
+* CI provided by CircleCI: [{{ cookiecutter.repo_name }}](https://circleci.com/gh/Financial-Times/{{ cookiecutter.repo_name }})
 
 ## Service endpoints
 _What are the endpoints offered by the service_

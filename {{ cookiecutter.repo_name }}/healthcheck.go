@@ -30,7 +30,7 @@ func (service *healthService) sampleCheck() health.Check {
 	return health.Check{
 		BusinessImpact:   "Sample healthcheck has no impact",
 		Name:             "Sample healthcheck",
-		PanicGuide:       "https://dewey.ft.com/{{ cookiecutter.service_name }}.html",
+		PanicGuide:       "https://dewey.ft.com/{{ cookiecutter.system_code }}.html",
 		Severity:         1,
 		TechnicalSummary: "Sample healthcheck has no technical details",
 		Checker:          service.sampleChecker,

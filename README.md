@@ -21,15 +21,10 @@ Current features
 # Usage
 
 1. Install cookiecutter (see [documentation](https://cookiecutter.readthedocs.io/en/latest/installation.html) for detailed instructions)
-
-```bash
-pip install --user cookiecutter
-```
-
 2. Create new local repository
 
 ```bash
-cd $GOPATH/src/github.com/FinancialTimes
+cd $GOPATH/src/github.com/Financial-Times
 cookiecutter git@github.com:Financial-Times/cookiecutter-upp-golang.git
 ```
 
@@ -40,6 +35,9 @@ See [cookiecutter.json](cookiecutter.json) for supported properties.
 
 ```bash
 cd $GOPATH/src/github.com/<your_new_repo>
+go get
+govendor init
+govendor add +external
 go build
 ```
 
