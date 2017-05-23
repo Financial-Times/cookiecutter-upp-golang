@@ -40,15 +40,8 @@ Options:
         --app-name="{{ cookiecutter.app_name }}"                   Application name ($APP_NAME)
         --port="8080"                                           Port to listen on ($APP_PORT)
         
-3. Test:
-
-    1. Either using curl:
-
-            curl http://localhost:8080/people/143ba45c-2fb3-35bc-b227-a6ed80b5c517 | json_pp
-
-    1. Or using [httpie](https://github.com/jkbrzt/httpie):
-
-            http GET http://localhost:8080/people/143ba45c-2fb3-35bc-b227-a6ed80b5c517
+3. Test: 
+    See example requests below
 
 ## Build and deployment
 _How can I build and deploy it (lots of this will be links out as the steps will be common)_
