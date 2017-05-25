@@ -40,8 +40,8 @@ Options:
         --app-name="{{ cookiecutter.app_name }}"                   Application name ($APP_NAME)
         --port="8080"                                           Port to listen on ($APP_PORT)
         
-3. Test: 
-    See example requests below
+3. Test: See requests below
+
 
 ## Build and deployment
 _How can I build and deploy it (lots of this will be links out as the steps will be common)_
@@ -57,12 +57,11 @@ e.g.
 
 Using curl:
 
-    curl http://localhost:8080/people/143ba45c-2fb3-35bc-b227-a6ed80b5c517 | json_pp`
+    curl http://localhost:8080/_<INSERT SEPCIFIC URL HERE>_| json_pp`
 
-The expected response will contain information about the person, and the organisations they are connected to (via memberships).
+_Explain what the response should represent_
 
-Based on the following [google doc](https://docs.google.com/document/d/1SC4Uskl-VD78y0lg5H2Gq56VCmM4OFHofZM-OvpsOFo/edit#heading=h.qjo76xuvpj83).
-
+Based on the following [google doc](_<INSERT API DOCUMETATION HERE>_)
 
 ## Utility endpoints
 _Endpoints that are there for support or testing, e.g read endpoints on the writers_

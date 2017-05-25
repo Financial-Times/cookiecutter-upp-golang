@@ -1,97 +1,45 @@
-# {{ cookiecutter.service_name }}
-_Should be the same as the github repo name but it isn't always._
+# cookiecutter-upp-golang
 
-[![Circle CI](https://circleci.com/gh/Financial-Times/{{ cookiecutter.repo_name }}/tree/master.png?style=shield)](https://circleci.com/gh/Financial-Times/{{ cookiecutter.repo_name }}/tree/master)[![Go Report Card](https://goreportcard.com/badge/github.com/Financial-Times/{{ cookiecutter.repo_name }})](https://goreportcard.com/report/github.com/Financial-Times/{{ cookiecutter.repo_name }}) [![Coverage Status](https://coveralls.io/repos/github/Financial-Times/{{ cookiecutter.repo_name }}/badge.svg)](https://coveralls.io/github/Financial-Times/{{ cookiecutter.repo_name }})
+Project template for UPP microservices in Golang.
+To be used with the [Cookiecutter](https://github.com/audreyr/cookiecutter) tool.
 
-## Introduction
+# Introduction
 
-_What is this service and what is it for? What other services does it depend on_
+This template is meant as an up-to-date skeleton for new Go microservices in the Universal Publishing Platform.
 
-{{ cookiecutter.project_short_description }}
+Whenever we need to e.g. bump the Docker image version or improve the README.md template or any other change that new services need to pick up, this is the place to make those changes.
+  
+Current features
+* ready-to-run app
+* basic admin endpoints with a sample healthcheck
+* Docker config
+* CircleCI config
+* vendoring support
+* README.md skeleton
+* .gitignore file
 
-## Installation
-      
-_How can I install it_
+# Usage
 
-Download the source code, dependencies and test dependencies:
+1. Install cookiecutter (see [documentation](https://cookiecutter.readthedocs.io/en/latest/installation.html) for detailed instructions)
+2. Create new local repository
 
-        go get -u github.com/kardianos/govendor
-        go get -u github.com/Financial-Times/{{ cookiecutter.repo_name }}
-        cd $GOPATH/src/github.com/Financial-Times/{{ cookiecutter.repo_name }}
-        govendor sync
-        go build .
+```bash
+cd $GOPATH/src/github.com/Financial-Times
+cookiecutter git@github.com:Financial-Times/cookiecutter-upp-golang.git
+```
 
-## Running locally
-_How can I run it_
+You will be prompted to provide values for template properties (or accept defaults).
+See [cookiecutter.json](cookiecutter.json) for supported properties.
 
-1. Run the tests and install the binary:
+3. Make use of yor new repo
 
-        govendor sync
-        govendor test -v -race
-        go install
+```bash
+cd $GOPATH/src/github.com/<your_new_repo>
+go get
+govendor init
+govendor add +external
+go build
+```
 
-2. Run the binary (using the `help` flag to see the available optional arguments):
+The app should build and run with basic admin endpoints
 
-        $GOPATH/bin/{{ cookiecutter.service_name }} [--help]
-
-Options:
-
-        --app-system-code="{{ cookiecutter.system_code }}"            System Code of the application ($APP_SYSTEM_CODE)
-        --app-name="{{ cookiecutter.app_name }}"                   Application name ($APP_NAME)
-        --port="8080"                                           Port to listen on ($APP_PORT)
-        
-3. Test: See requests below
-
-
-## Build and deployment
-_How can I build and deploy it (lots of this will be links out as the steps will be common)_
-
-* Built by Docker Hub on merge to master: [{{ cookiecutter.docker_image }}](https://hub.docker.com/r/{{ cookiecutter.docker_image }}/)
-* CI provided by CircleCI: [{{ cookiecutter.repo_name }}](https://circleci.com/gh/Financial-Times/{{ cookiecutter.repo_name }})
-
-## Service endpoints
-_What are the endpoints offered by the service_
-
-e.g.
-### GET
-
-Using curl:
-
-    curl http://localhost:8080/_<INSERT SEPCIFIC URL HERE>_| json_pp`
-
-_Explain what the response should represent_
-
-Based on the following [google doc](_<INSERT API DOCUMETATION HERE>_)
-
-## Utility endpoints
-_Endpoints that are there for support or testing, e.g read endpoints on the writers_
-
-## Healthchecks
-Admin endpoints are:
-
-`/__gtg`
-
-`/__health`
-
-`/__build-info`
-
-_These standard endpoints do not need to be specifically documented._
-
-_This section *should* however explain what checks are done to determine health and gtg status._
-
-There are several checks performed:
-
-_e.g._
-* Checks that a connection can be made to Neo4j, using the neo4j url supplied as a parameter in service startup.
-
-## Other information
-_Anything else you want to add._
-
-_e.g. (NB: this example may be something we want to extract as it's probably common to a lot of services)_
-
-### Logging
-
-* The application uses [logrus](https://github.com/Sirupsen/logrus); the log file is initialised in [main.go](main.go).
-* Logging requires an `env` app parameter, for all environments other than `local` logs are written to file.
-* When running locally, logs are written to console. If you want to log locally to file, you need to pass in an env parameter that is != `local`.
-* NOTE: `/__build-info` and `/__gtg` endpoints are not logged as they are called every second from varnish/vulcand and this information is not needed in logs/splunk.
