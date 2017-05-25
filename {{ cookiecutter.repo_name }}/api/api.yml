@@ -1,6 +1,6 @@
 swagger: "2.0"
 info:
-  description: "API specification for the  {{ cookiecutter.service_name }}"
+  description: "{{ cookiecutter.project_short_description }}"
   version: "1.0.0"
   title: "{{ cookiecutter.service_name }}"
 host: api.ft.com
@@ -63,7 +63,7 @@ paths:
           examples:
             application/json; charset=UTF-8:
               version: "0.0.7"
-              repository: "https://github.com/Financial-Times/{{ cookiecutter.service_name }}.git"
+              repository: "https://github.com/Financial-Times/{{ cookiecutter.repo_name }}.git"
               revision: "7cdbdb18b4a518eef3ebb1b545fc124612f9d7cd"
               builder: "go version go1.6.3 linux/amd64"
               dateTime: "20161123122615"
