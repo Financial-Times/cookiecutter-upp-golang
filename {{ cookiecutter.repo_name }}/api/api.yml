@@ -40,7 +40,7 @@ paths:
                 - businessImpact: "No Business Impact."
                   checkOutput: "OK"
                   lastUpdated: "2017-01-16T10:26:47.222805121Z"
-                  name: "UnhealthyCycles"
+                  name: "{{cookiecutter.service_name }} healthchecks"
                   ok: true
                   panicGuide: "https://dewey.ft.com/{{ cookiecutter.service_name }}.html"
                   severity: 1
