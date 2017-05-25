@@ -3,6 +3,12 @@ info:
   description: "{{ cookiecutter.project_short_description }}"
   version: "1.0.0"
   title: "{{ cookiecutter.service_name }}"
+  contact:
+    name: Universal Publishing
+    email: Universal.Publishing.Platform@ft.com
+  license:
+    name: Apache-2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0
 host: api.ft.com
 schemes:
   - http
