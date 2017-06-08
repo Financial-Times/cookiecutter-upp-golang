@@ -1,0 +1,15 @@
+# Default values for {{ cookiecutter.app_name }}.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+service:
+  name: "" # The name of the service, should be defined in the specific app-configs folder.
+  hasHealthcheck: "true"
+replicaCount: 2
+image:
+  repository: {{ cookiecutter.docker_image }}
+  version: "" # should be set explicitly at installation
+  pullPolicy: Always
+resources:
+  limits:
+    memory: 256Mi
+

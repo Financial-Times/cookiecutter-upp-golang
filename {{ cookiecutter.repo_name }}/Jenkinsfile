@@ -1,0 +1,19 @@
+{% if cookiecutter.deploy_to_publishing_cluster == 'y' and cookiecutter.deploy_to_delivery_cluster == 'y' %}
+	{% set clusters = 'Cluster.DELIVERY, Cluster.PUBLISHING' %}
+{% elif cookiecutter.deploy_to_delivery_cluster == 'y' %}
+	{% set clusters = 'Cluster.DELIVERY' %}
+{% elif cookiecutter.deploy_to_publishing_cluster == 'y' %}
+	{% set clusters = 'Cluster.PUBLISHING' %}
+{% else %}
+    {% set clusters = 'Cluster.PUBLISHING' %}
+{% endif %}
+@Library('k8s-pipeline-lib') _
+
+import com.ft.jenkins.BuildConfig
+import com.ft.jenkins.Cluster
+
+BuildConfig config = new BuildConfig()
+config.deployToClusters = [{{clusters}}]
+
+entryPointForReleaseAndDev(config)
+/* test*/
