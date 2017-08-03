@@ -1,20 +1,20 @@
 package main
 
 import (
-	health "github.com/Financial-Times/go-fthealth/v1_1"
-	status "github.com/Financial-Times/service-status-go/httphandlers"
-	log "github.com/Sirupsen/logrus"
-	"github.com/jawher/mow.cli"
 	"net/http"
 	"os"
 	"os/signal"
 	"syscall"
+	"sync"
+	"github.com/jawher/mow.cli"
+	log "github.com/Sirupsen/logrus"
 {% if cookiecutter.add_sample_http_endpoint == "yes" %}
 	"github.com/gorilla/mux"
-	"github.com/Financial-Times/http-handlers-go/httphandlers"
 	"github.com/rcrowley/go-metrics"
+	"github.com/Financial-Times/http-handlers-go/httphandlers"
 {% endif %}
-	"sync"
+	health "github.com/Financial-Times/go-fthealth/v1_1"
+	status "github.com/Financial-Times/service-status-go/httphandlers"
 )
 
 const appDescription = "{{ cookiecutter.project_short_description }}"
