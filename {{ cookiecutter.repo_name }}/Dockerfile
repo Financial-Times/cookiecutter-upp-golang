@@ -21,7 +21,6 @@ RUN apk --no-cache --virtual .build-dependencies add git \
   && echo "Fetching dependencies..." \
   && go get -u github.com/kardianos/govendor \
   && $GOPATH/bin/govendor sync \
-  && go get -v \
   && go build -ldflags="${LDFLAGS}" \
   && mv ${PROJECT} /${PROJECT} \
   && apk del .build-dependencies \

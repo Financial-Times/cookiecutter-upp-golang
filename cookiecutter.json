@@ -7,5 +7,6 @@
   "project_short_description": "UPP Golang Microservice Template short description - please amend",
   "github_username": "your_name",
   "deploy_to_delivery_cluster": "y/n",
-  "deploy_to_publishing_cluster": "y/n"
+  "deploy_to_publishing_cluster": "y/n",
+  "add_sample_http_endpoint": ["yes", "no"]
 }
