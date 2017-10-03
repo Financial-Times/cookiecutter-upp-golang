@@ -1,4 +1,4 @@
-# Default values for {{ cookiecutter.app_name }}.
+# Default values for {{ cookiecutter.service_name }}.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 service:
@@ -12,4 +12,5 @@ image:
 resources:
   limits:
     memory: 256Mi
-
+env:
+  ENV_VAR_1: "default value"

@@ -3,7 +3,8 @@ kind: Deployment
 metadata:
   name: {{ '{{' }} .Values.service.name {{ '}}' }}
   labels:
-    chart: "{{ '{{' }} .Chart.Name {{ '}}' }}-{{ '{{' }} .Chart.Version {{ '}}' }}"
+    chart: "{{ '{{' }} .Chart.Name | trunc 63 {{ '}}' }}"
+    chartVersion: "{{ '{{' }} .Chart.Version | trunc 63 {{ '}}' }}"
     visualize: "true"
     app: {{ '{{' }} .Values.service.name {{ '}}' }}
 spec:
@@ -19,16 +20,21 @@ spec:
     spec:
       containers:
       - name: {{ '{{' }} .Chart.Name {{ '}}' }}
-        image: "{{ '{{' }} .Values.image.repository {{ '}}' }}:{{ '{{' }} .Values.image.version {{ '}}' }}"
+        image: "{{ '{{' }} .Values.image.repository {{ '}}' }}:{{ '{{' }} .Chart.Version {{ '}}' }}"
         imagePullPolicy: {{ '{{' }} .Values.image.pullPolicy {{ '}}' }}
         env:
         - name: ENV_VAR_1
-          value: "value for env var 1"
+          value: {{ '{{' }} .Values.env.ENV_VAR_1 {{ '}}' }}
         - name: ENV_VAR_WITH_VALUE_IN_CONFIG_MAP
           valueFrom:
             configMapKeyRef:
               name: global-config
               key: key.for.configmap.entry
+        - name: ENV_VAR_WITH_VALUE_IN_SECRET_MAP
+          valueFrom:
+            secretKeyRef:
+              name: global-secrets
+              key: key.for.secret.entry
         ports:
         - containerPort: 8080
         livenessProbe:
