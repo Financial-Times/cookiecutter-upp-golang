@@ -6,5 +6,6 @@
   "docker_image": "coco/{{ cookiecutter.system_code }}",
   "project_short_description": "UPP Golang Microservice Template short description - please amend",
   "github_username": "your_name",
-  "add_sample_http_endpoint": ["yes", "no"]
+  "add_sample_http_endpoint": ["yes", "no"],
+  "deploy_to_delivery_cluster": ["yes", "no"]
 }
