@@ -7,5 +7,6 @@
   "project_short_description": "UPP Golang Microservice Template short description - please amend",
   "github_username": "your_name",
   "add_sample_http_endpoint": ["yes", "no"],
-  "deploy_to_delivery_cluster": ["yes", "no"]
+  "deploy_to_delivery_cluster": ["yes", "no"],
+  "cluster": "{{ 'delivery' if cookiecutter.deploy_to_delivery_cluster == 'yes' else 'publishing' }}"
 }
