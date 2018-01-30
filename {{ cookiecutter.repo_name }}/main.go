@@ -7,7 +7,7 @@ import (
 	"syscall"
 	"sync"
 	"github.com/jawher/mow.cli"
-	log "github.com/Sirupsen/logrus"
+	log "github.com/sirupsen/logrus"
 {% if cookiecutter.add_sample_http_endpoint == "yes" %}
 	"github.com/gorilla/mux"
 	"github.com/rcrowley/go-metrics"
