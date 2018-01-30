@@ -50,3 +50,11 @@ func (service *healthService) gtgCheck() gtg.Status {
 	}
 	return gtg.Status{GoodToGo: true}
 }
+
+func (h *healthService) GTG() gtg.Status {
+	check := func() gtg.Status {
+		return gtgCheck(h.Checker)
+	}
+
+	return gtg.FailFastParallelCheck([]gtg.StatusChecker{check})()
+}
