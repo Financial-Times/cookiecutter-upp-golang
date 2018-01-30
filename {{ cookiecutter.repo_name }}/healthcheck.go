@@ -1,40 +1,67 @@
 package main
 
 import (
-	"net/http"
-
 	fthealth "github.com/Financial-Times/go-fthealth/v1_1"
 	"github.com/Financial-Times/service-status-go/gtg"
+	"time"
 )
 
 const healthPath = "/__health"
 
 type HealthService struct {
+	config       *HealthConfig
+	healthChecks []fthealth.Check
+	gtgChecks    []gtg.StatusChecker
 }
 
-func (service *HealthService) Health(appSystemCode string, appName string, description string) func(w http.ResponseWriter, r *http.Request) {
-	checks := []fthealth.Check{service.HealthCheck()}
-	hc := fthealth.HealthCheck{
-		SystemCode:  appSystemCode,
-		Name:        appName,
-		Description: appDescription,
-		Checks:      checks,
+type HealthConfig struct {
+	appSystemCode string
+	appName       string
+	description   string
+}
+
+func newHealthService(appSystemCode string, appName string, appDescription string) *HealthService {
+	hc := &HealthService{
+		config: &HealthConfig{
+			appSystemCode: appSystemCode,
+			appName:       appName,
+			description:   appDescription,
+		},
 	}
-	return fthealth.Handler(hc)
+	hc.healthChecks = []fthealth.Check{hc.sampleCheck()}
+	check := func() gtg.Status {
+		return gtgCheck(hc.sampleChecker)
+	}
+	var gtgChecks []gtg.StatusChecker
+	gtgChecks = append(hc.gtgChecks, check)
+	hc.gtgChecks = gtgChecks
+	return hc
 }
 
-func (service *HealthService) HealthCheck() fthealth.Check {
+func (service *HealthService) Health() fthealth.HC {
+	return &fthealth.TimedHealthCheck{
+		HealthCheck: fthealth.HealthCheck{
+			SystemCode:  service.config.appSystemCode,
+			Name:        service.config.appName,
+			Description: service.config.description,
+			Checks:      service.healthChecks,
+		},
+		Timeout: 10 * time.Second,
+	}
+}
+
+func (service *HealthService) sampleCheck() fthealth.Check {
 	return fthealth.Check{
 		BusinessImpact:   "Sample healthcheck has no impact",
 		Name:             "Sample healthcheck",
 		PanicGuide:       "https://dewey.ft.com/cookie-cutter-test.html",
 		Severity:         1,
 		TechnicalSummary: "Sample healthcheck has no technical details",
-		Checker:          service.Checker,
+		Checker:          service.sampleChecker,
 	}
 }
 
-func (service *HealthService) Checker() (string, error) {
+func (service *HealthService) sampleChecker() (string, error) {
 	return "Sample is healthy", nil
 }
 
@@ -46,9 +73,5 @@ func gtgCheck(handler func() (string, error)) gtg.Status {
 }
 
 func (service *HealthService) GTG() gtg.Status {
-	check := func() gtg.Status {
-		return gtgCheck(service.Checker)
-	}
-
-	return gtg.FailFastParallelCheck([]gtg.StatusChecker{check})()
+	return gtg.FailFastParallelCheck(service.gtgChecks)()
 }

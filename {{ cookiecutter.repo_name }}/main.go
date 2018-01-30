@@ -64,11 +64,11 @@ func main() {
 }
 
 func serveEndpoints(appSystemCode string, appName string, port string{%- if cookiecutter.add_sample_http_endpoint == "yes" -%}, requestHandler requestHandler{%- endif -%}) {
-	healthService := HealthService{}
+	healthService := newHealthService(appSystemCode, appName, appDescription)
 
 	serveMux := http.NewServeMux()
 
-	serveMux.HandleFunc(healthPath, http.HandlerFunc(healthService.Health(appSystemCode, appName, appDescription)))
+	serveMux.HandleFunc(healthPath, http.HandlerFunc(fthealth.Handler(healthService.Health())))
 	serveMux.HandleFunc(status.GTGPath, status.NewGoodToGoHandler(healthService.GTG))
 	serveMux.HandleFunc(status.BuildInfoPath, status.BuildInfoHandler)
 {% if cookiecutter.add_sample_http_endpoint == "yes" %}

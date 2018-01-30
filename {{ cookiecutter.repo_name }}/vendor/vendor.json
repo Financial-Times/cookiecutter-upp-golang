@@ -14,25 +14,24 @@
 			"checksumSHA1": "dqF1g4reeLPNN10qTXgDJj3fHm4=",
 			"path": "github.com/Financial-Times/http-handlers-go/httphandlers",
 			"revision": "229ac16f1d9ec9bca485d2dafb9ec14dc7e9ba24",
-			"revisionTime": "2017-08-09T12:10:07Z"
-		},
-		{
-			"checksumSHA1": "fqpohN7Qp2qj7TLMbUxh/cK4oH0=",
-			"path": "github.com/Financial-Times/service-status-go/buildinfo",
-			"revision": "3f5199736a3d7ae52394c63aac36834786825e21",
-			"revisionTime": "2016-03-23T11:15:42Z"
+			"revisionTime": "2017-08-09T12:10:07Z",
+			"version": "0.1.1",
+			"versionExact": "0.1.1"
 		},
 		{
 			"checksumSHA1": "2rGNLXdRC3qr5n5ll7BpYt8HCK8=",
 			"path": "github.com/Financial-Times/service-status-go/gtg",
 			"revision": "3f5199736a3d7ae52394c63aac36834786825e21",
-			"revisionTime": "2016-03-23T11:15:42Z"
+			"revisionTime": "2016-03-23T11:15:42Z",
+			"version": "0.1.0",
+			"versionExact": "0.1.0"
 		},
 		{
 			"checksumSHA1": "973POGyMCoyaKQuIYX2f7EKFwlQ=",
 			"path": "github.com/Financial-Times/service-status-go/httphandlers",
 			"revision": "3f5199736a3d7ae52394c63aac36834786825e21",
-			"revisionTime": "2016-03-23T11:15:42Z"
+			"revisionTime": "2016-03-23T11:15:42Z",
+			"version": "v0.1.0"
 		},
 		{
 			"checksumSHA1": "+sjiZBzrsk91W1A3Md1azCkZadg=",
@@ -67,48 +66,6 @@
 			"revisionTime": "2017-10-29T18:05:40Z",
 			"version": "v1.0.3",
 			"versionExact": "v1.0.3"
-		},
-		{
-			"checksumSHA1": "uwnJHm8Gd1eHtNSpUGdSk5BlxfU=",
-			"path": "github.com/jawher/mow.cli/internal/container",
-			"revision": "3ff64ca21987cfa628bd8d1865162b7ccd6107d7",
-			"revisionTime": "2017-11-11T12:18:41Z"
-		},
-		{
-			"checksumSHA1": "qOpDoI5EiHFjKS8ViJo51HiLPCg=",
-			"path": "github.com/jawher/mow.cli/internal/flow",
-			"revision": "3ff64ca21987cfa628bd8d1865162b7ccd6107d7",
-			"revisionTime": "2017-11-11T12:18:41Z"
-		},
-		{
-			"checksumSHA1": "72Uqy51AQymJlWzn/9vYWhqhW04=",
-			"path": "github.com/jawher/mow.cli/internal/fsm",
-			"revision": "3ff64ca21987cfa628bd8d1865162b7ccd6107d7",
-			"revisionTime": "2017-11-11T12:18:41Z"
-		},
-		{
-			"checksumSHA1": "XBG8fzCX/uXW92Euctkvaj1Eq1g=",
-			"path": "github.com/jawher/mow.cli/internal/lexer",
-			"revision": "3ff64ca21987cfa628bd8d1865162b7ccd6107d7",
-			"revisionTime": "2017-11-11T12:18:41Z"
-		},
-		{
-			"checksumSHA1": "L08a+gbFmzTmxz1GgrayiseaZms=",
-			"path": "github.com/jawher/mow.cli/internal/matcher",
-			"revision": "3ff64ca21987cfa628bd8d1865162b7ccd6107d7",
-			"revisionTime": "2017-11-11T12:18:41Z"
-		},
-		{
-			"checksumSHA1": "DvUiOG6lUYXPhHGHhD7RqNxnX3E=",
-			"path": "github.com/jawher/mow.cli/internal/parser",
-			"revision": "3ff64ca21987cfa628bd8d1865162b7ccd6107d7",
-			"revisionTime": "2017-11-11T12:18:41Z"
-		},
-		{
-			"checksumSHA1": "Y8x+qE1O695IlBJ/ObBjXS+wzSs=",
-			"path": "github.com/jawher/mow.cli/internal/values",
-			"revision": "3ff64ca21987cfa628bd8d1865162b7ccd6107d7",
-			"revisionTime": "2017-11-11T12:18:41Z"
 		},
 		{
 			"checksumSHA1": "oY/QEEFSa+kRKlgeIIAhCOYbnrE=",
