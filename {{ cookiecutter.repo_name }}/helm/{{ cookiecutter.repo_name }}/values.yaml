@@ -10,6 +10,8 @@ image:
   version: "" # should be set explicitly at installation
   pullPolicy: IfNotPresent
 resources:
+  requests:
+    memory: 64Mi
   limits:
     memory: 256Mi
 env:
