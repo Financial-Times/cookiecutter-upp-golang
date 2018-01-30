@@ -7,13 +7,13 @@ import (
 	"syscall"
 	"sync"
 	"github.com/jawher/mow.cli"
-	log "github.com/Sirupsen/logrus"
+	log "github.com/sirupsen/logrus"
 {% if cookiecutter.add_sample_http_endpoint == "yes" %}
 	"github.com/gorilla/mux"
 	"github.com/rcrowley/go-metrics"
 	"github.com/Financial-Times/http-handlers-go/httphandlers"
 {% endif %}
-	health "github.com/Financial-Times/go-fthealth/v1_1"
+	fthealth "github.com/Financial-Times/go-fthealth/v1_1"
 	status "github.com/Financial-Times/service-status-go/httphandlers"
 )
 
@@ -65,13 +65,12 @@ func main() {
 }
 
 func serveEndpoints(appSystemCode string, appName string, port string{%- if cookiecutter.add_sample_http_endpoint == "yes" -%}, requestHandler requestHandler{%- endif -%}) {
-	healthService := newHealthService(&healthConfig{appSystemCode: appSystemCode, appName: appName, port: port})
+	healthService := newHealthService(appSystemCode, appName, appDescription)
 
 	serveMux := http.NewServeMux()
 
-	hc := health.HealthCheck{SystemCode: appSystemCode, Name: appName, Description: appDescription, Checks: healthService.checks}
-	serveMux.HandleFunc(healthPath, health.Handler(hc))
-	serveMux.HandleFunc(status.GTGPath, status.NewGoodToGoHandler(healthService.gtgCheck))
+	serveMux.HandleFunc(healthPath, http.HandlerFunc(fthealth.Handler(healthService.Health())))
+	serveMux.HandleFunc(status.GTGPath, status.NewGoodToGoHandler(healthService.GTG))
 	serveMux.HandleFunc(status.BuildInfoPath, status.BuildInfoHandler)
 {% if cookiecutter.add_sample_http_endpoint == "yes" %}
 	servicesRouter := mux.NewRouter()
