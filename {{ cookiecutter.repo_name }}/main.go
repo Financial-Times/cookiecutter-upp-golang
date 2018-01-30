@@ -13,7 +13,6 @@ import (
 	"github.com/rcrowley/go-metrics"
 	"github.com/Financial-Times/http-handlers-go/httphandlers"
 {% endif %}
-	health "github.com/Financial-Times/go-fthealth/v1_1"
 	status "github.com/Financial-Times/service-status-go/httphandlers"
 )
 
@@ -65,12 +64,11 @@ func main() {
 }
 
 func serveEndpoints(appSystemCode string, appName string, port string{%- if cookiecutter.add_sample_http_endpoint == "yes" -%}, requestHandler requestHandler{%- endif -%}) {
-	healthService := newHealthService(&healthConfig{appSystemCode: appSystemCode, appName: appName, port: port})
+	healthService := HealthService{}
 
 	serveMux := http.NewServeMux()
 
-	hc := health.HealthCheck{SystemCode: appSystemCode, Name: appName, Description: appDescription, Checks: healthService.checks}
-	serveMux.HandleFunc(healthPath, health.Handler(hc))
+	serveMux.HandleFunc(healthPath, http.HandlerFunc(healthService.Health(appSystemCode, appName, appDescription)))
 	serveMux.HandleFunc(status.GTGPath, status.NewGoodToGoHandler(healthService.GTG))
 	serveMux.HandleFunc(status.BuildInfoPath, status.BuildInfoHandler)
 {% if cookiecutter.add_sample_http_endpoint == "yes" %}
