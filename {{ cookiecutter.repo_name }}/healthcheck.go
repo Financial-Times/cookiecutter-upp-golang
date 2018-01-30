@@ -6,8 +6,6 @@ import (
 	"time"
 )
 
-const healthPath = "/__health"
-
 type HealthService struct {
 	config       *HealthConfig
 	healthChecks []fthealth.Check
@@ -15,17 +13,17 @@ type HealthService struct {
 }
 
 type HealthConfig struct {
-	appSystemCode string
-	appName       string
-	description   string
+	appSystemCode  string
+	appName        string
+	appDescription string
 }
 
 func newHealthService(appSystemCode string, appName string, appDescription string) *HealthService {
 	hc := &HealthService{
 		config: &HealthConfig{
-			appSystemCode: appSystemCode,
-			appName:       appName,
-			description:   appDescription,
+			appSystemCode:  appSystemCode,
+			appName:        appName,
+			appDescription: appDescription,
 		},
 	}
 	hc.healthChecks = []fthealth.Check{hc.sampleCheck()}
@@ -43,7 +41,7 @@ func (service *HealthService) Health() fthealth.HC {
 		HealthCheck: fthealth.HealthCheck{
 			SystemCode:  service.config.appSystemCode,
 			Name:        service.config.appName,
-			Description: service.config.description,
+			Description: service.config.appDescription,
 			Checks:      service.healthChecks,
 		},
 		Timeout: 10 * time.Second,
@@ -54,7 +52,7 @@ func (service *HealthService) sampleCheck() fthealth.Check {
 	return fthealth.Check{
 		BusinessImpact:   "Sample healthcheck has no impact",
 		Name:             "Sample healthcheck",
-		PanicGuide:       "https://dewey.ft.com/cookie-cutter-test.html",
+		PanicGuide:       "https://dewey.ft.com/{{ cookiecutter.system_code }}.html",
 		Severity:         1,
 		TechnicalSummary: "Sample healthcheck has no technical details",
 		Checker:          service.sampleChecker,
