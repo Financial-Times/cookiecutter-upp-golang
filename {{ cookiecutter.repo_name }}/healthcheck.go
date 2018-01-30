@@ -6,6 +6,8 @@ import (
 	"time"
 )
 
+const healthPath = "/__health"
+
 type HealthService struct {
 	config       *HealthConfig
 	healthChecks []fthealth.Check

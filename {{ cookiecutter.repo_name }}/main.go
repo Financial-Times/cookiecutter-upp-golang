@@ -13,6 +13,7 @@ import (
 	"github.com/rcrowley/go-metrics"
 	"github.com/Financial-Times/http-handlers-go/httphandlers"
 {% endif %}
+	fthealth "github.com/Financial-Times/go-fthealth/v1_1"
 	status "github.com/Financial-Times/service-status-go/httphandlers"
 )
 
