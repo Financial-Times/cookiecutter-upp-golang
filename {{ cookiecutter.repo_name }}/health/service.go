@@ -1,12 +1,13 @@
-package main
+package health
 
 import (
+	"time"
+
 	fthealth "github.com/Financial-Times/go-fthealth/v1_1"
 	"github.com/Financial-Times/service-status-go/gtg"
-	"time"
 )
 
-const healthPath = "/__health"
+const DefaultHealthPath = "/__health"
 
 type HealthService struct {
 	config       *HealthConfig
@@ -20,7 +21,7 @@ type HealthConfig struct {
 	appDescription string
 }
 
-func newHealthService(appSystemCode string, appName string, appDescription string) *HealthService {
+func NewHealthService(appSystemCode string, appName string, appDescription string) *HealthService {
 	hc := &HealthService{
 		config: &HealthConfig{
 			appSystemCode:  appSystemCode,
@@ -48,21 +49,6 @@ func (service *HealthService) Health() fthealth.HC {
 		},
 		Timeout: 10 * time.Second,
 	}
-}
-
-func (service *HealthService) sampleCheck() fthealth.Check {
-	return fthealth.Check{
-		BusinessImpact:   "Sample healthcheck has no impact",
-		Name:             "Sample healthcheck",
-		PanicGuide:       "https://dewey.ft.com/{{ cookiecutter.system_code }}.html",
-		Severity:         1,
-		TechnicalSummary: "Sample healthcheck has no technical details",
-		Checker:          service.sampleChecker,
-	}
-}
-
-func (service *HealthService) sampleChecker() (string, error) {
-	return "Sample is healthy", nil
 }
 
 func gtgCheck(handler func() (string, error)) gtg.Status {

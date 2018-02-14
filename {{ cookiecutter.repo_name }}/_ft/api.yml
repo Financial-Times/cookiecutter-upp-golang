@@ -1,0 +1,87 @@
+swagger: "2.0"
+
+info:
+  title: {{ cookiecutter.app_name }}
+  description: {{ cookiecutter.project_short_description }}
+  version: 0.0.0
+  license:
+    name: MIT
+  contact:
+    name: Universal Publishing
+    email: universal.publishing@ft.com
+
+host: api.ft.com
+basePath: "/"
+schemes:
+  - http
+  - https
+
+paths:
+  /__health:
+    get:
+      summary: Healthchecks
+      description: Runs application healthchecks and returns FT Healthcheck style json.
+      produces:
+        - application/json
+      tags:
+        - Health
+      responses:
+        200:
+          description: >
+            Should always return 200 along with the output of the healthchecks - regardless
+            of whether the healthchecks failed or not.
+            Please inspect the overall ok property to see whether or not the application is healthy.
+          examples:
+            application/json:
+              schemaVersion: 1
+              systemCode: draft-content-api
+              name: draft-content-api
+              description: A descriptive description
+              checks:
+                - id: check-content-api-health
+                  name: Check Content API Health
+                  ok: false
+                  severity: 1
+                  businessImpact: Impossible to serve content through PAC
+                  technicalSummary: Content API is not available at http://test.api.ft.com/content
+                  panicGuide: https://dewey.ft.com/draft-content-api.html
+                  checkOutput: gtg returned a non-200 HTTP status
+                  lastUpdated: 2017-08-03T10:44:32.324709638+01:00
+              ok: true
+  /__gtg:
+    get:
+      summary: Good To Go
+      description: Lightly healthchecks the application, and returns a 200 if it's Good-To-Go.
+      tags:
+        - Health
+      produces:
+          - text/plain; charset=US-ASCII
+      responses:
+        200:
+          description: The application is healthy enough to perform all its functions correctly - i.e. good to go.
+          examples:
+               text/plain; charset=US-ASCII: OK
+        503:
+          description: >
+            One or more of the applications healthchecks have failed,
+            so please do not use the app. See the /__health endpoint for more detailed information.
+  /__build-info:
+    get:
+      summary: Build Information
+      description: >
+        Returns application build info, such as the git repository and revision,
+        the golang version it was built with, and the app release version.
+      produces:
+        - application/json; charset=UTF-8
+      tags:
+        - Info
+      responses:
+        200:
+          description: Outputs build information as described in the summary.
+          examples:
+            application/json; charset=UTF-8:
+              version: 0.0.1
+              repository: https://github.com/Financial-Times/{{cookiecutter.repo_name}}.git
+              revision: 7cdbdb18b4a518eef3ebb1b545fc124612f9d7cd
+              builder: go version go1.8.3 linux/amd64
+              dateTime: "20161123122615"

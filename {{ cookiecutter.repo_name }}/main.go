@@ -6,7 +6,11 @@ import (
 	"os/signal"
 	"syscall"
 	"sync"
+
+   "github.com/Financial-Times/{{ cookiecutter.repo_name }}/health"
+
 	"github.com/jawher/mow.cli"
+   api "github.com/Financial-Times/api-endpoint"
 	log "github.com/sirupsen/logrus"
 {% if cookiecutter.add_sample_http_endpoint == "yes" %}
 	"github.com/gorilla/mux"
@@ -43,6 +47,14 @@ func main() {
 		EnvVar: "APP_PORT",
 	})
 
+   apiYml := app.String(cli.StringOpt{
+		Name:   "api-yml",
+		Value:  "./api.yml",
+		Desc:   "Location of the OpenAPI YML file.",
+		EnvVar: "API_YML",
+	})
+
+   log.SetFormatter(&log.JSONFormatter{})
 	log.SetLevel(log.InfoLevel)
 	log.Infof("[Startup] {{ cookiecutter.service_name }} is starting ")
 
@@ -50,7 +62,7 @@ func main() {
 		log.Infof("System code: %s, App Name: %s, Port: %s", *appSystemCode, *appName, *port)
 
 		go func() {
-			serveEndpoints(*appSystemCode, *appName, *port{%- if cookiecutter.add_sample_http_endpoint == "yes" -%}, requestHandler{}{%- endif -%})
+			serveEndpoints(*appSystemCode, *appName, *port, apiYml{%- if cookiecutter.add_sample_http_endpoint == "yes" -%}, requestHandler{}{%- endif -%})
 		}()
 
 		// todo: insert app code here
@@ -59,19 +71,29 @@ func main() {
 	}
 	err := app.Run(os.Args)
 	if err != nil {
-		log.Errorf("App could not start, error=[%s]\n", err)
+		log.WithError(err).Error("{{ cookiecutter.repo_name }} could not start!")
 		return
 	}
 }
 
-func serveEndpoints(appSystemCode string, appName string, port string{%- if cookiecutter.add_sample_http_endpoint == "yes" -%}, requestHandler requestHandler{%- endif -%}) {
-	healthService := newHealthService(appSystemCode, appName, appDescription)
+func serveEndpoints(appSystemCode string, appName string, port string, apiYml *string{%- if cookiecutter.add_sample_http_endpoint == "yes" -%}, requestHandler requestHandler{%- endif -%}) {
+	healthService := health.NewHealthService(appSystemCode, appName, appDescription)
 
 	serveMux := http.NewServeMux()
 
-	serveMux.HandleFunc(healthPath, http.HandlerFunc(fthealth.Handler(healthService.Health())))
+	serveMux.HandleFunc(health.DefaultHealthPath, http.HandlerFunc(fthealth.Handler(healthService.Health())))
 	serveMux.HandleFunc(status.GTGPath, status.NewGoodToGoHandler(healthService.GTG))
 	serveMux.HandleFunc(status.BuildInfoPath, status.BuildInfoHandler)
+
+   if apiYml != nil {
+		apiEndpoint, err := api.NewAPIEndpointForFile(*apiYml)
+		if err != nil {
+			log.WithError(err).WithField("file", apiYml).Warn("Failed to serve the API Endpoint for this service. Please validate the file exists, and that it fits the OpenAPI specification.")
+		} else {
+			serveMux.HandleFunc(api.DefaultPath, apiEndpoint.ServeHTTP)
+		}
+	}
+
 {% if cookiecutter.add_sample_http_endpoint == "yes" %}
 	servicesRouter := mux.NewRouter()
 	servicesRouter.HandleFunc("/sample", requestHandler.sampleMessage).Methods("POST")
@@ -90,7 +112,7 @@ func serveEndpoints(appSystemCode string, appName string, port string{%- if cook
 	wg.Add(1)
 	go func() {
 		if err := server.ListenAndServe(); err != nil {
-			log.Infof("HTTP server closing with message: %v", err)
+			log.WithError(err).Info("HTTP server closing with message")
 		}
 		wg.Done()
 	}()
@@ -99,7 +121,7 @@ func serveEndpoints(appSystemCode string, appName string, port string{%- if cook
 	log.Infof("[Shutdown] {{ cookiecutter.service_name }} is shutting down")
 
 	if err := server.Close(); err != nil {
-		log.Errorf("Unable to stop http server: %v", err)
+		log.WithError(err).Error("Unable to stop http server")
 	}
 
 	wg.Wait()

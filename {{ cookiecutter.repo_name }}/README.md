@@ -10,7 +10,7 @@ _What is this service and what is it for? What other services does it depend on_
 {{ cookiecutter.project_short_description }}
 
 ## Installation
-      
+
 _How can I install it_
 
 Download the source code, dependencies and test dependencies:
@@ -39,7 +39,7 @@ Options:
         --app-system-code="{{ cookiecutter.system_code }}"            System Code of the application ($APP_SYSTEM_CODE)
         --app-name="{{ cookiecutter.app_name }}"                   Application name ($APP_NAME)
         --port="8080"                                           Port to listen on ($APP_PORT)
-        
+
 3. Test:
 
     1. Either using curl:
@@ -86,6 +86,8 @@ Admin endpoints are:
 `/__health`
 
 `/__build-info`
+
+`/__api`
 
 _These standard endpoints do not need to be specifically documented._
 

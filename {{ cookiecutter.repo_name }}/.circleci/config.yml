@@ -3,7 +3,7 @@ jobs:
   build:
     working_directory: /go/src/github.com/Financial-Times/{{ cookiecutter.repo_name }}
     docker:
-      - image: golang:1.8.3
+      - image: golang:1.8.5
         environment:
           GOPATH: /go
           CIRCLE_TEST_REPORTS: /tmp/test-results
@@ -41,18 +41,41 @@ jobs:
   dockerfile:
     working_directory: /{{ cookiecutter.repo_name }}
     docker:
-      - image: docker:1.12.6-git
+      - image: docker:18.01.0-ce-git
     steps:
       - checkout
       - setup_docker_engine
       - run:
           name: Build Dockerfile
           command: docker build .
+  dredd:
+    working_directory: /go/src/github.com/Financial-Times/{{ cookiecutter.repo_name }}
+    docker:
+      - image: bankrs/golang-dredd:go1.8.3-dredd4.4.0
+        environment:
+          GOPATH: /go
+      - image: peteclarkft/ersatz:stable
+    steps:
+      - checkout
+      - run:
+          name: External Dependencies
+          command: |
+            go get -u github.com/kardianos/govendor
+      - run:
+          name: Govendor Sync
+          command: govendor sync -v
+      - run:
+          name: Go Build
+          command: go build -v
+      - run:
+          name: Dredd API Testing
+          command: dredd
 workflows:
   version: 2
   test-and-build-docker:
     jobs:
       - build
+      - dredd
       - dockerfile:
           requires:
             - build
