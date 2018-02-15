@@ -3,7 +3,7 @@ jobs:
   build:
     working_directory: /go/src/github.com/Financial-Times/{{ cookiecutter.repo_name }}
     docker:
-      - image: golang:1.8.5
+      - image: golang:1.8.3
         environment:
           GOPATH: /go
           CIRCLE_TEST_REPORTS: /tmp/test-results
@@ -41,7 +41,7 @@ jobs:
   dockerfile:
     working_directory: /{{ cookiecutter.repo_name }}
     docker:
-      - image: docker:18.01.0-ce-git
+      - image: docker:17.09.0-ce-git
     steps:
       - checkout
       - setup_docker_engine
@@ -54,6 +54,7 @@ jobs:
       - image: bankrs/golang-dredd:go1.8.3-dredd4.4.0
         environment:
           GOPATH: /go
+          API_YML: /go/src/github.com/Financial-Times/{{ cookiecutter.repo_name }}/_ft/api.yml
       - image: peteclarkft/ersatz:stable
     steps:
       - checkout

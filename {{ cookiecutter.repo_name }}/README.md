@@ -56,47 +56,9 @@ _How can I build and deploy it (lots of this will be links out as the steps will
 * Built by Docker Hub on merge to master: [{{ cookiecutter.docker_image }}](https://hub.docker.com/r/{{ cookiecutter.docker_image }}/)
 * CI provided by CircleCI: [{{ cookiecutter.repo_name }}](https://circleci.com/gh/Financial-Times/{{ cookiecutter.repo_name }})
 
-## Service endpoints
-_What are the endpoints offered by the service_
+## API
 
-e.g.
-### GET
-
-Using curl:
-
-    curl http://localhost:8080/people/143ba45c-2fb3-35bc-b227-a6ed80b5c517 | json_pp`
-
-Or using [httpie](https://github.com/jkbrzt/httpie):
-
-    http GET http://localhost:8080/people/143ba45c-2fb3-35bc-b227-a6ed80b5c517
-
-The expected response will contain information about the person, and the organisations they are connected to (via memberships).
-
-Based on the following [google doc](https://docs.google.com/document/d/1SC4Uskl-VD78y0lg5H2Gq56VCmM4OFHofZM-OvpsOFo/edit#heading=h.qjo76xuvpj83).
-
-
-## Utility endpoints
-_Endpoints that are there for support or testing, e.g read endpoints on the writers_
-
-## Healthchecks
-Admin endpoints are:
-
-`/__gtg`
-
-`/__health`
-
-`/__build-info`
-
-`/__api`
-
-_These standard endpoints do not need to be specifically documented._
-
-_This section *should* however explain what checks are done to determine health and gtg status._
-
-There are several checks performed:
-
-_e.g._
-* Checks that a connection can be made to Neo4j, using the neo4j url supplied as a parameter in service startup.
+For detailed documentation in OpenAPI format, please see [here](./_ft/api.yml).
 
 ## Other information
 _Anything else you want to add._

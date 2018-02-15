@@ -85,3 +85,15 @@ paths:
               revision: 7cdbdb18b4a518eef3ebb1b545fc124612f9d7cd
               builder: go version go1.8.3 linux/amd64
               dateTime: "20161123122615"
+  /__api:
+    get:
+      summary: API Documentation
+      description: >
+        Returns OpenAPI documentation for the application.
+      produces:
+        - text/plain;charset=utf-8
+      tags:
+        - Info
+      responses:
+        200:
+          description: Returns OpenAPI information as a YAML document.
