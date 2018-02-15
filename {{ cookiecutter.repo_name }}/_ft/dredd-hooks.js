@@ -2,8 +2,16 @@ var hooks = require('hooks');
 var http = require('http');
 var fs = require('fs');
 
+const defaultFixtures = './_ft/ersatz-fixtures.yml';
+
 hooks.beforeAll(function(t, done) {
-   var contents = fs.readFileSync('./_ft/ersatz-fixtures.yml', 'utf8');
+   if(!fs.existsSync(defaultFixtures)){
+      console.log('No fixtures found, skipping hook.');
+      done();
+      return;
+   }
+
+   var contents = fs.readFileSync(defaultFixtures, 'utf8');
 
    var options = {
       host: 'localhost',
