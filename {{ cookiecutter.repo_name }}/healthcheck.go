@@ -55,7 +55,7 @@ func (service *HealthService) sampleCheck() fthealth.Check {
 		BusinessImpact:   "Sample healthcheck has no impact",
 		Name:             "Sample healthcheck",
 		PanicGuide:       "https://dewey.ft.com/{{ cookiecutter.system_code }}.html",
-		Severity:         1,
+		Severity:         2,
 		TechnicalSummary: "Sample healthcheck has no technical details",
 		Checker:          service.sampleChecker,
 	}
