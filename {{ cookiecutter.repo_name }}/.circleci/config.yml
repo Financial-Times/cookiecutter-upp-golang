@@ -28,10 +28,10 @@ jobs:
           command: go build -v
       - run:
           name: Run tests
-          command: go test -race -cover -coverprofile=$CIRCLE_ARTIFACTS/coverage.out | go-junit-report > $CIRCLE_TEST_REPORTS/golang/junit.xml
+          command: go test -race -cover -coverprofile=${CIRCLE_COVERAGE_REPORT}/coverage.out | go-junit-report > ${CIRCLE_TEST_REPORTS}/golang/junit.xml
       - run:
           name: Upload coverage
-          command: goveralls -coverprofile=${CIRCLE_COVERAGE_REPORT}/coverage.out -service=circle-ci -repotoken=$COVERALLS_TOKEN
+          command: goveralls -coverprofile=${CIRCLE_COVERAGE_REPORT}/coverage.out -service=circle-ci -repotoken=${COVERALLS_TOKEN}
       - store_test_results:
           path: /tmp/test-results
   dockerfile:
