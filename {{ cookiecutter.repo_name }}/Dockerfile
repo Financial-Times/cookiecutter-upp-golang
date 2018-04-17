@@ -3,7 +3,7 @@ FROM golang:1.10-alpine
 ENV PROJECT={{ cookiecutter.repo_name }}
 COPY . /${PROJECT}-sources/
 
-RUN apk --no-cache --virtual .build-dependencies add git \
+RUN apk --no-cache --virtual .build-dependencies add git curl \
   && ORG_PATH="github.com/Financial-Times" \
   && REPO_PATH="${ORG_PATH}/${PROJECT}" \
   && mkdir -p $GOPATH/src/${ORG_PATH} \
