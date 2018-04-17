@@ -31,13 +31,13 @@ cookiecutter git@github.com:Financial-Times/cookiecutter-upp-golang.git
 You will be prompted to provide values for template properties (or accept defaults).
 See [cookiecutter.json](cookiecutter.json) for supported properties.
 
-3. Make use of yor new repo
+3. Make use of your new repo
 
 ```bash
 cd $GOPATH/src/github.com/<your_new_repo>
 go get
-govendor init
-govendor add +external
+dep init
+dep ensure
 go build
 ```
 
