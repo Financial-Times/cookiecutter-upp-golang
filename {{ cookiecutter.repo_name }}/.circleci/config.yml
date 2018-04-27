@@ -21,7 +21,7 @@ jobs:
             mkdir -p ${CIRCLE_TEST_REPORTS}
             mkdir -p ${CIRCLE_COVERAGE_REPORT}
       - run:
-          name: Download vendored dependancies
+          name: Download vendored dependencies
           command: dep ensure -v -vendor-only
       - run:
           name: Go build
