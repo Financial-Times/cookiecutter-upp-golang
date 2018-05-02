@@ -1,12 +1,13 @@
-package main
+package health
 
 import (
+	"time"
+
 	fthealth "github.com/Financial-Times/go-fthealth/v1_1"
 	"github.com/Financial-Times/service-status-go/gtg"
-	"time"
 )
 
-const healthPath = "/__health"
+const DefaultHealthPath = "/__health"
 
 type HealthService struct {
 	config       *HealthConfig
@@ -20,7 +21,7 @@ type HealthConfig struct {
 	appDescription string
 }
 
-func newHealthService(appSystemCode string, appName string, appDescription string) *HealthService {
+func NewHealthService(appSystemCode string, appName string, appDescription string) *HealthService {
 	hc := &HealthService{
 		config: &HealthConfig{
 			appSystemCode:  appSystemCode,

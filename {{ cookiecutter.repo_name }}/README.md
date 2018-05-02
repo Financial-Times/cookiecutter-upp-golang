@@ -10,15 +10,15 @@ _What is this service and what is it for? What other services does it depend on_
 {{ cookiecutter.project_short_description }}
 
 ## Installation
-      
+
 _How can I install it_
 
 Download the source code, dependencies and test dependencies:
 
-        go get -u github.com/kardianos/govendor
+        curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
         go get -u github.com/Financial-Times/{{ cookiecutter.repo_name }}
         cd $GOPATH/src/github.com/Financial-Times/{{ cookiecutter.repo_name }}
-        govendor sync
+        dep ensure
         go build .
 
 ## Running locally
@@ -26,8 +26,8 @@ _How can I run it_
 
 1. Run the tests and install the binary:
 
-        govendor sync
-        govendor test -v -race
+        dep ensure
+        go test -race ./...
         go install
 
 2. Run the binary (using the `help` flag to see the available optional arguments):
@@ -39,16 +39,7 @@ Options:
         --app-system-code="{{ cookiecutter.system_code }}"            System Code of the application ($APP_SYSTEM_CODE)
         --app-name="{{ cookiecutter.app_name }}"                   Application name ($APP_NAME)
         --port="8080"                                           Port to listen on ($APP_PORT)
-        
-3. Test:
 
-    1. Either using curl:
-
-            curl http://localhost:8080/people/143ba45c-2fb3-35bc-b227-a6ed80b5c517 | json_pp
-
-    1. Or using [httpie](https://github.com/jkbrzt/httpie):
-
-            http GET http://localhost:8080/people/143ba45c-2fb3-35bc-b227-a6ed80b5c517
 
 ## Build and deployment
 _How can I build and deploy it (lots of this will be links out as the steps will be common)_
@@ -56,45 +47,9 @@ _How can I build and deploy it (lots of this will be links out as the steps will
 * Built by Docker Hub on merge to master: [{{ cookiecutter.docker_image }}](https://hub.docker.com/r/{{ cookiecutter.docker_image }}/)
 * CI provided by CircleCI: [{{ cookiecutter.repo_name }}](https://circleci.com/gh/Financial-Times/{{ cookiecutter.repo_name }})
 
-## Service endpoints
-_What are the endpoints offered by the service_
+## API
 
-e.g.
-### GET
-
-Using curl:
-
-    curl http://localhost:8080/people/143ba45c-2fb3-35bc-b227-a6ed80b5c517 | json_pp`
-
-Or using [httpie](https://github.com/jkbrzt/httpie):
-
-    http GET http://localhost:8080/people/143ba45c-2fb3-35bc-b227-a6ed80b5c517
-
-The expected response will contain information about the person, and the organisations they are connected to (via memberships).
-
-Based on the following [google doc](https://docs.google.com/document/d/1SC4Uskl-VD78y0lg5H2Gq56VCmM4OFHofZM-OvpsOFo/edit#heading=h.qjo76xuvpj83).
-
-
-## Utility endpoints
-_Endpoints that are there for support or testing, e.g read endpoints on the writers_
-
-## Healthchecks
-Admin endpoints are:
-
-`/__gtg`
-
-`/__health`
-
-`/__build-info`
-
-_These standard endpoints do not need to be specifically documented._
-
-_This section *should* however explain what checks are done to determine health and gtg status._
-
-There are several checks performed:
-
-_e.g._
-* Checks that a connection can be made to Neo4j, using the neo4j url supplied as a parameter in service startup.
+For detailed documentation in OpenAPI format, please see [here](./_ft/api.yml).
 
 ## Other information
 _Anything else you want to add._
@@ -103,7 +58,7 @@ _e.g. (NB: this example may be something we want to extract as it's probably com
 
 ### Logging
 
-* The application uses [logrus](https://github.com/Sirupsen/logrus); the log file is initialised in [main.go](main.go).
+* The application uses [logrus](https://github.com/sirupsen/logrus); the log file is initialised in [main.go](main.go).
 * Logging requires an `env` app parameter, for all environments other than `local` logs are written to file.
 * When running locally, logs are written to console. If you want to log locally to file, you need to pass in an env parameter that is != `local`.
 * NOTE: `/__build-info` and `/__gtg` endpoints are not logged as they are called every second from varnish/vulcand and this information is not needed in logs/splunk.
