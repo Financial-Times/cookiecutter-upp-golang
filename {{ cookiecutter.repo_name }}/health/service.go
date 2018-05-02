@@ -51,6 +51,21 @@ func (service *HealthService) Health() fthealth.HC {
 	}
 }
 
+func (service *HealthService) sampleCheck() fthealth.Check {
+	return fthealth.Check{
+		BusinessImpact:   "Sample healthcheck has no impact",
+		Name:             "Sample healthcheck",
+		PanicGuide:       "https://dewey.ft.com/{{ cookiecutter.system_code }}.html",
+		Severity:         2,
+		TechnicalSummary: "Sample healthcheck has no technical details",
+		Checker:          service.sampleChecker,
+	}
+}
+
+func (service *HealthService) sampleChecker() (string, error) {
+	return "Sample is healthy", nil
+}
+
 func gtgCheck(handler func() (string, error)) gtg.Status {
 	if _, err := handler(); err != nil {
 		return gtg.Status{GoodToGo: false, Message: err.Error()}
