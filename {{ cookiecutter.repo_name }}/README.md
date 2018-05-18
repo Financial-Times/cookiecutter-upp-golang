@@ -15,10 +15,10 @@ _How can I install it_
 
 Download the source code, dependencies and test dependencies:
 
-        go get -u github.com/kardianos/govendor
+        curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
         go get -u github.com/Financial-Times/{{ cookiecutter.repo_name }}
         cd $GOPATH/src/github.com/Financial-Times/{{ cookiecutter.repo_name }}
-        govendor sync
+        dep ensure
         go build .
 
 ## Running locally
@@ -26,8 +26,8 @@ _How can I run it_
 
 1. Run the tests and install the binary:
 
-        govendor sync
-        govendor test -v -race
+        dep ensure
+        go test -race ./...
         go install
 
 2. Run the binary (using the `help` flag to see the available optional arguments):
@@ -39,9 +39,6 @@ Options:
         --app-system-code="{{ cookiecutter.system_code }}"            System Code of the application ($APP_SYSTEM_CODE)
         --app-name="{{ cookiecutter.app_name }}"                   Application name ($APP_NAME)
         --port="8080"                                           Port to listen on ($APP_PORT)
-        
-3. Test: See requests below
-
 
 ## Build and deployment
 _How can I build and deploy it (lots of this will be links out as the steps will be common)_
@@ -91,7 +88,7 @@ _e.g. (NB: this example may be something we want to extract as it's probably com
 
 ### Logging
 
-* The application uses [logrus](https://github.com/Sirupsen/logrus); the log file is initialised in [main.go](main.go).
+* The application uses [logrus](https://github.com/sirupsen/logrus); the log file is initialised in [main.go](main.go).
 * Logging requires an `env` app parameter, for all environments other than `local` logs are written to file.
 * When running locally, logs are written to console. If you want to log locally to file, you need to pass in an env parameter that is != `local`.
 * NOTE: `/__build-info` and `/__gtg` endpoints are not logged as they are called every second from varnish/vulcand and this information is not needed in logs/splunk.

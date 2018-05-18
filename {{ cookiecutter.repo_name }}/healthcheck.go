@@ -1,52 +1,77 @@
 package main
 
 import (
-	health "github.com/Financial-Times/go-fthealth/v1_1"
+	fthealth "github.com/Financial-Times/go-fthealth/v1_1"
 	"github.com/Financial-Times/service-status-go/gtg"
+	"time"
 )
 
 const healthPath = "/__health"
 
-type healthService struct {
-	config *healthConfig
-	checks []health.Check
+type HealthService struct {
+	config       *HealthConfig
+	healthChecks []fthealth.Check
+	gtgChecks    []gtg.StatusChecker
 }
 
-type healthConfig struct {
-	appSystemCode string
-	appName       string
-	port          string
+type HealthConfig struct {
+	appSystemCode  string
+	appName        string
+	appDescription string
 }
 
-func newHealthService(config *healthConfig) *healthService {
-	service := &healthService{config: config}
-	service.checks = []health.Check{
-		service.sampleCheck(),
+func newHealthService(appSystemCode string, appName string, appDescription string) *HealthService {
+	hc := &HealthService{
+		config: &HealthConfig{
+			appSystemCode:  appSystemCode,
+			appName:        appName,
+			appDescription: appDescription,
+		},
 	}
-	return service
+	hc.healthChecks = []fthealth.Check{hc.sampleCheck()}
+	check := func() gtg.Status {
+		return gtgCheck(hc.sampleChecker)
+	}
+	var gtgChecks []gtg.StatusChecker
+	gtgChecks = append(hc.gtgChecks, check)
+	hc.gtgChecks = gtgChecks
+	return hc
 }
 
-func (service *healthService) sampleCheck() health.Check {
-	return health.Check{
+func (service *HealthService) Health() fthealth.HC {
+	return &fthealth.TimedHealthCheck{
+		HealthCheck: fthealth.HealthCheck{
+			SystemCode:  service.config.appSystemCode,
+			Name:        service.config.appName,
+			Description: service.config.appDescription,
+			Checks:      service.healthChecks,
+		},
+		Timeout: 10 * time.Second,
+	}
+}
+
+func (service *HealthService) sampleCheck() fthealth.Check {
+	return fthealth.Check{
 		BusinessImpact:   "Sample healthcheck has no impact",
 		Name:             "Sample healthcheck",
 		PanicGuide:       "https://dewey.ft.com/{{ cookiecutter.system_code }}.html",
-		Severity:         1,
+		Severity:         2,
 		TechnicalSummary: "Sample healthcheck has no technical details",
 		Checker:          service.sampleChecker,
 	}
 }
 
-func (service *healthService) sampleChecker() (string, error) {
+func (service *HealthService) sampleChecker() (string, error) {
 	return "Sample is healthy", nil
-
 }
 
-func (service *healthService) gtgCheck() gtg.Status {
-	for _, check := range service.checks {
-		if _, err := check.Checker(); err != nil {
-			return gtg.Status{GoodToGo: false, Message: err.Error()}
-		}
+func gtgCheck(handler func() (string, error)) gtg.Status {
+	if _, err := handler(); err != nil {
+		return gtg.Status{GoodToGo: false, Message: err.Error()}
 	}
 	return gtg.Status{GoodToGo: true}
+}
+
+func (service *HealthService) GTG() gtg.Status {
+	return gtg.FailFastParallelCheck(service.gtgChecks)()
 }

@@ -1,14 +1,20 @@
 package main
 
 import (
-	health "github.com/Financial-Times/go-fthealth/v1_1"
-	status "github.com/Financial-Times/service-status-go/httphandlers"
-	log "github.com/Sirupsen/logrus"
-	"github.com/jawher/mow.cli"
 	"net/http"
 	"os"
 	"os/signal"
 	"syscall"
+	"sync"
+	"github.com/jawher/mow.cli"
+	log "github.com/sirupsen/logrus"
+{% if cookiecutter.add_sample_http_endpoint == "yes" %}
+	"github.com/gorilla/mux"
+	"github.com/rcrowley/go-metrics"
+	"github.com/Financial-Times/http-handlers-go/httphandlers"
+{% endif %}
+	fthealth "github.com/Financial-Times/go-fthealth/v1_1"
+	status "github.com/Financial-Times/service-status-go/httphandlers"
 )
 
 const appDescription = "{{ cookiecutter.project_short_description }}"
@@ -44,7 +50,7 @@ func main() {
 		log.Infof("System code: %s, App Name: %s, Port: %s", *appSystemCode, *appName, *port)
 
 		go func() {
-			serveAdminEndpoints(*appSystemCode, *appName, *port)
+			serveEndpoints(*appSystemCode, *appName, *port{%- if cookiecutter.add_sample_http_endpoint == "yes" -%}, requestHandler{}{%- endif -%})
 		}()
 
 		// todo: insert app code here
@@ -58,19 +64,45 @@ func main() {
 	}
 }
 
-func serveAdminEndpoints(appSystemCode string, appName string, port string) {
-	healthService := newHealthService(&healthConfig{appSystemCode: appSystemCode, appName: appName, port: port})
+func serveEndpoints(appSystemCode string, appName string, port string{%- if cookiecutter.add_sample_http_endpoint == "yes" -%}, requestHandler requestHandler{%- endif -%}) {
+	healthService := newHealthService(appSystemCode, appName, appDescription)
 
 	serveMux := http.NewServeMux()
 
-	hc := health.HealthCheck{SystemCode: appSystemCode, Name: appName, Description: appDescription, Checks: healthService.checks}
-	serveMux.HandleFunc(healthPath, health.Handler(hc))
-	serveMux.HandleFunc(status.GTGPath, status.NewGoodToGoHandler(healthService.gtgCheck))
+	serveMux.HandleFunc(healthPath, http.HandlerFunc(fthealth.Handler(healthService.Health())))
+	serveMux.HandleFunc(status.GTGPath, status.NewGoodToGoHandler(healthService.GTG))
 	serveMux.HandleFunc(status.BuildInfoPath, status.BuildInfoHandler)
+{% if cookiecutter.add_sample_http_endpoint == "yes" %}
+	servicesRouter := mux.NewRouter()
+	servicesRouter.HandleFunc("/sample", requestHandler.sampleMessage).Methods("POST")
+	//todo: add new handlers here
 
-	if err := http.ListenAndServe(":"+port, serveMux); err != nil {
-		log.Fatalf("Unable to start: %v", err)
+	var monitoringRouter http.Handler = servicesRouter
+	monitoringRouter = httphandlers.TransactionAwareRequestLoggingHandler(log.StandardLogger(), monitoringRouter)
+	monitoringRouter = httphandlers.HTTPMetricsHandler(metrics.DefaultRegistry, monitoringRouter)
+
+	serveMux.Handle("/", monitoringRouter)
+{% endif %}
+	server := &http.Server{Addr: ":" + port, Handler: serveMux}
+
+	wg := sync.WaitGroup{}
+
+	wg.Add(1)
+	go func() {
+		if err := server.ListenAndServe(); err != nil {
+			log.Infof("HTTP server closing with message: %v", err)
+		}
+		wg.Done()
+	}()
+
+	waitForSignal()
+	log.Infof("[Shutdown] {{ cookiecutter.service_name }} is shutting down")
+
+	if err := server.Close(); err != nil {
+		log.Errorf("Unable to stop http server: %v", err)
 	}
+
+	wg.Wait()
 }
 
 func waitForSignal() {

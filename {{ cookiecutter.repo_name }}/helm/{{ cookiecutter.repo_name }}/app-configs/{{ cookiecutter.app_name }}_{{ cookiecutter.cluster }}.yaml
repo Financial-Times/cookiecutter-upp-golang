@@ -1,0 +1,5 @@
+# Values used for the deployed application.
+service:
+  name: {{ cookiecutter.service_name }}
+env:
+  ENV_VAR_1: "value1"
