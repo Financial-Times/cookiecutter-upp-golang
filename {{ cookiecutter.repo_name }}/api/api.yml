@@ -22,8 +22,6 @@ paths:
       description: Returns "pong" if the server is running.
       produces:
         - text/plain; charset=utf-8
-      tags:
-        - Health
       responses:
         200:
           description: We return pong in plaintext only.
@@ -35,8 +33,6 @@ paths:
       description: Runs application healthchecks and returns FT Healthcheck style json.
       produces:
         - application/json
-      tags:
-        - Health
       responses:
         200:
           description: Should always return 200 along with the output of the healthchecks - regardless of whether the healthchecks failed or not. Please inspect the overall `ok` property to see whether or not the application is healthy.
@@ -61,8 +57,6 @@ paths:
       description: Returns application build info, such as the git repository and revision, the golang version it was built with, and the app release version.
       produces:
        - application/json; charset=UTF-8
-      tags:
-        - Info
       responses:
         200:
           description: Outputs build information as described in the summary.
@@ -77,8 +71,6 @@ paths:
     get:
       summary: Good To Go
       description: Lightly healthchecks the application, and returns a 200 if it's Good-To-Go.
-      tags:
-        - Health
       responses:
         200:
            description: The application is healthy enough to perform all its functions correctly - i.e. good to go.
