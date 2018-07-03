@@ -1,11 +1,13 @@
 package main
 
 import (
+	"context"
 	"net/http"
 	"os"
 	"os/signal"
 	"syscall"
-	"sync"
+	"time"
+
 	"github.com/jawher/mow.cli"
 	log "github.com/sirupsen/logrus"
 {% if cookiecutter.add_sample_http_endpoint == "yes" %}
@@ -85,24 +87,21 @@ func serveEndpoints(appSystemCode string, appName string, port string{%- if cook
 {% endif %}
 	server := &http.Server{Addr: ":" + port, Handler: serveMux}
 
-	wg := sync.WaitGroup{}
-
-	wg.Add(1)
 	go func() {
 		if err := server.ListenAndServe(); err != nil {
 			log.Infof("HTTP server closing with message: %v", err)
 		}
-		wg.Done()
 	}()
 
 	waitForSignal()
 	log.Infof("[Shutdown] {{ cookiecutter.service_name }} is shutting down")
 
-	if err := server.Close(); err != nil {
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	if err := server.Shutdown(ctx); err != nil {
 		log.Errorf("Unable to stop http server: %v", err)
 	}
-
-	wg.Wait()
 }
 
 func waitForSignal() {
