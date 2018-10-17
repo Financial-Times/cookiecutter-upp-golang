@@ -45,6 +45,8 @@ spec:
             secretKeyRef:
               name: global-secrets
               key: key.for.secret.entry
+        - name: LOG_LEVEL
+          value: "{{ '{{' }} .Values.env.LOG_LEVEL {{ '}}' }}"
         ports:
         - containerPort: 8080
         livenessProbe:

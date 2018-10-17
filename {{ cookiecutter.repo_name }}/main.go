@@ -9,7 +9,7 @@ import (
 	"time"
 
 	"github.com/jawher/mow.cli"
-	log "github.com/sirupsen/logrus"
+	log "github.com/Financial-Times/go-logger"
 {% if cookiecutter.add_sample_http_endpoint == "yes" %}
 	"github.com/gorilla/mux"
 	"github.com/rcrowley/go-metrics"
@@ -45,7 +45,14 @@ func main() {
 		EnvVar: "APP_PORT",
 	})
 
-	log.SetLevel(log.InfoLevel)
+	logLevel := app.String(cli.StringOpt{
+		Name:   "logLevel",
+		Value:  "INFO",
+		Desc:   "Logging level (DEBUG, INFO, WARN, ERROR)",
+		EnvVar: "LOG_LEVEL",
+	})
+	
+	log.InitLogger(*appSystemCode, *logLevel)
 	log.Infof("[Startup] {{ cookiecutter.service_name }} is starting ")
 
 	app.Action = func() {
@@ -80,7 +87,7 @@ func serveEndpoints(appSystemCode string, appName string, port string{%- if cook
 	//todo: add new handlers here
 
 	var monitoringRouter http.Handler = servicesRouter
-	monitoringRouter = httphandlers.TransactionAwareRequestLoggingHandler(log.StandardLogger(), monitoringRouter)
+	monitoringRouter = httphandlers.TransactionAwareRequestLoggingHandler(log.Logger(), monitoringRouter)
 	monitoringRouter = httphandlers.HTTPMetricsHandler(metrics.DefaultRegistry, monitoringRouter)
 
 	serveMux.Handle("/", monitoringRouter)
