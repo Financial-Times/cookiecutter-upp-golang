@@ -2,4 +2,5 @@
 service:
   name: {{ cookiecutter.service_name }}
 env:
+  LOG_LEVEL: INFO
   ENV_VAR_1: "value1"
